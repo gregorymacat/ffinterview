@@ -26,6 +26,13 @@ const cloudCoverageCodes = {
   ovc: 1,
 }
 
+const calculateWindDirection = (degrees) => {
+  const sectors = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
+  const degreeIndex = Math.round(degrees / 45);
+
+  return sectors[degreeIndex];
+}
+
 function Weather(props) {
   const [temperature, setTemperature] = useState('');
   const [relativeHumidity, setRelativeHumidity] = useState('');
@@ -34,27 +41,6 @@ function Weather(props) {
   const [windSpeed, setWindSpeed] = useState();
   const [windDirection, setWindDirection] = useState('');
 
-  const calculateWindDirection = (degrees) => {
-    if (degrees > 315 && degrees < 45) {
-      return 'N';
-    } else if (degrees === 45) {
-      return 'NE';
-    } else if (degrees > 45 && degrees < 135) {
-      return 'E';
-    } else if (degrees === 135) {
-      return 'SE';
-    } else if (degrees > 135 && degrees < 225) {
-      return 'S';
-    } else if (degrees === 225) {
-      return 'SW';
-    } else if (degrees > 225 && degrees < 315) {
-      return 'W';
-    } else if (degrees === 315) {
-      return 'NW';
-    } else {
-      return '';
-    }
-  }
   const getWorstCloudConditions = (coverCode, coverCodeV2) => {
     const worstCoverage = {};
 
