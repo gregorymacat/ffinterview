@@ -1,28 +1,57 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Airport from './components/airport';
+import Weather from './components/weather';
 
 // Main page info
-  // Sec 1: airport idientifier (icao), 
-  // Sec 2: airport name, 
-  // Sec 3: available runways, 
-  // Sec 4: aiport lat/long
-  // Sec 5: current weather report
-    // 5.1: Temp (in Farenheit)
-    // 5.2: Relative Humidity (%)
-    // 5.4: Summary of cloud coverage (text string)
-      // 5.4.1: Greatest amount if any listed
-    // 5.5: Visibility (Statute Miles)
-    // Wind Speed (MPH)
-    // Wind Direction (cardinal to secondary intercardinal precision)
-
-const getAirportData = () => {
-  
-}
+// Input
+// Airport Info (component)
+// Weather Info (component)
+// const airportIds = ['kaus', '50r', 'egll', 'khou'];
 
 function App() {
+  const [airportInput, setAirportInput] = useState('');
+  const [userAirportIds, setUserAirportIds] = useState([]);
+  
+  const handleUserInput = (event) => {
+    setAirportInput(event.target.value);
+  }
 
+  const handleIdSubmission = (event) => {
+    console.log(airportInput);
+    const userIdArray = airportInput.replaceAll(' ', '').split(',');
+
+    console.log('This is the userIdArray: ', userIdArray)
+    setUserAirportIds(userIdArray);
+
+    event.preventDefault();
+  }
+
+  // useEffect(() => {
+    
+  // }, []);
+  
   return (
-    <div>
+    <div className="app">
       <h1>ForeFlight Interview</h1>
+      <form onSubmit={handleIdSubmission}>
+        <label>
+          Please enter one or more airport identifiers:
+          <input type="text" value={airportInput} onChange={handleUserInput}></input>
+        </label>
+        <input type="submit"></input>
+      </form>
+      
+      {/* There will need to be a component that gathers this information for each
+      input (firstInput div). The airport information can also be its own component, as will the weather.*/}
+        {userAirportIds.map(userAirportId => (
+          <div className="data-container">
+            <Airport key={`aidinfo-${userAirportId}`} userAirportId={userAirportId}/>
+            <div>
+              <h1>Weather Report:</h1>
+              <Weather key={`aidweather-${userAirportId}`} userAirportId={userAirportId}/>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }

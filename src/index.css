@@ -6,3 +6,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.data-container {
+  display: flex;
+  justify-content: space-around;
+  border: 5px solid black;
+  margin: 10px;
+}
+.airport-conatiner {
+  border-right: 5px solid black;
+  padding: 25px;
+  padding-left: 25px;
+}
+.weather-container {
+  padding: 25px;
+  padding-right: 25px;
+}
