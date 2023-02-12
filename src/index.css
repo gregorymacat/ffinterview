@@ -1,23 +1,115 @@
-body {
+html, 
+body,
+#root,
+.app {
   margin: 0;
+  height: 100%;
+}
+body {
+  /* background-image: linear-gradient(to bottom,  #84fdf78c, #59faf2ce); */
+  background-color: white;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.data-container {
+.airportid-input-container {
   display: flex;
   justify-content: space-around;
-  border: 5px solid black;
-  margin: 10px;
+  align-items: center;
+  height: 8%;
+  background-color: #212e39;
 }
-.airport-conatiner {
-  border-right: 5px solid black;
+.airportid-input-container h2 {
+  color: white;
+}
+.airportid-input-container form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.airportid-input-container input[type=text]{
+  height: 30px;
+  width: 400px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(189, 186, 186, 0.2);
+  border: thin solid rgba(207, 207, 207, 0.8);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-right: 0;
+  outline: 0;
+  padding: 0 0 0 15px;
+}
+.material-symbols-outlined {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 30px;
+  box-shadow: 0 5px 15px rgba(189, 186, 186, 0.2);
+  border: thin solid rgba(207, 207, 207, 0.8);
+  border-left: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: rgb(216, 216, 216);
+}
+.material-symbols-outlined:hover{
+  background-color: rgb(140, 140, 140);
+}
+.material-symbols-outlined:active{
+  background-color: rgb(65, 65, 65);
+}
+
+.tiles-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.info-tile-container,
+.invalid-id-container {
+  display: flex;
+  justify-content: space-between;
+  /* background-image: linear-gradient(to bottom right,#d3f4f5, #babec2); */
+  background-color: #d8d8d8;
+  border-radius: 15px;
+  box-shadow: 2px 5px 10px #babec2;
+  margin: 20px;
+  padding: 10px 10px;
+  height: 350px;
+  width: 900px;
+  overflow-y: auto;
+}
+.invalid-id-container {
+  display: block;
+  height: 200px;
+}
+.airport-container {
+  display: flex;
+  flex-direction: column;
   padding: 25px;
-  padding-left: 25px;
+  max-width: 65%;
+}
+.airport-container #runway-title {
+  margin-top: 15px;
+}
+.runway-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .weather-container {
-  padding: 25px;
-  padding-right: 25px;
+  min-width: 25%;
+  background-image: linear-gradient(to bottom right,#17cbd1, #398dfc);
+  border: 2px solid #268dc9;
+  border-radius: 15px;
+  padding: 5px 25px;
+}
+.weather-container h2 {
+  margin: 35px 0 45px 0;
+}
+.weather-container p{
+  margin: 15px 0;
 }

@@ -1,14 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 
-// Sec 5: current weather report
-  // 5.1: Temp (in Farenheit)
-  // 5.2: Relative Humidity (%)
-  // 5.4: Summary of cloud coverage (text string)
-    // 5.4.1: Greatest amount if any listed
-  // 5.5: Visibility (Statute Miles)
-  // Wind Speed (MPH)
-  // Wind Direction (cardinal to secondary intercardinal precision)
 const cloudCoverageTranslation = {
   clr: 'Clear Skies',
   skc: 'Clear Skies',
@@ -37,9 +28,37 @@ function Weather(props) {
   const [temperature, setTemperature] = useState('');
   const [relativeHumidity, setRelativeHumidity] = useState('');
   const [cloudCoverage, setCloudCoverage] = useState('');
-  const [visibility, setVisibility] = useState();
-  const [windSpeed, setWindSpeed] = useState();
+  const [visibility, setVisibility] = useState('');
+  const [windSpeed, setWindSpeed] = useState('');
   const [windDirection, setWindDirection] = useState('');
+
+  const setWeatherData = (allWeatherInfo) => {
+    if (!allWeatherInfo.report) {
+      return;
+    }
+    const availableWeatherData = allWeatherInfo.report.conditions || 
+      allWeatherInfo.report.forecast.conditions[0];
+    const {
+      tempC = 0,
+      relativeHumidity: relHumidity = 0,
+      cloudLayers = [],
+      cloudLayersV2 = [],
+      visibility = {},
+      wind = {},
+    } = availableWeatherData;
+
+    const tempF = (tempC * 1.8) + 32;
+    const worstCoverage = getWorstCloudConditions(cloudLayers, cloudLayersV2);
+    const windSpeedMph = wind.speedKts * 1.151 || 'N/A';
+    const windDir = wind.direction ? calculateWindDirection(wind.direction) : 'N/A';
+
+    setTemperature(`${Math.round(tempF * 100) / 100}°`);
+    setRelativeHumidity(relHumidity);
+    setCloudCoverage(worstCoverage.coverage);
+    setVisibility(visibility.distanceSm || 0);
+    setWindSpeed(Math.round(windSpeedMph * 100) / 100);
+    setWindDirection(windDir);
+  }
 
   const getWorstCloudConditions = (coverCode, coverCodeV2) => {
     const worstCoverage = {};
@@ -62,44 +81,13 @@ function Weather(props) {
     return worstCoverage;
   }
 
-  const getWeatherData = (id) => {
-    axios({
-        method: 'get',
-        url: `http://localhost:3000/weather/${id}.json`,
-    })
-      .then((response) => {
-        console.log('This is the response: ', response.data);
-        const {
-          tempC,
-          relativeHumidity: relHumidity,
-          cloudLayers,
-          cloudLayersV2,
-          visibility,
-          wind,
-        } = response.data.report.conditions;
-        const tempF = (tempC * 1.8) + 32;
-        const worstCoverage = getWorstCloudConditions(cloudLayers, cloudLayersV2);
-        const windSpeedMph = wind.speedKts * 1.151;
-        const windDir = calculateWindDirection(wind.direction);
-
-        setTemperature(Math.round(tempF * 100) / 100);
-        setRelativeHumidity(relHumidity);
-        setCloudCoverage(worstCoverage.coverage);
-        setVisibility(visibility.distanceSm);
-        setWindSpeed(Math.round(windSpeedMph * 100) / 100);
-        setWindDirection(windDir);
-      })
-      .catch((err) => {
-        return err;
-      });
-  }
-
   useEffect(() => {
-    getWeatherData(props.userAirportId);
-  }, [props.userAirportId]);
-
+    setWeatherData(props.weatherData);
+  }, [props.weatherData]);
+ 
   return (
     <div className="weather-container">
+      <h2>Weather</h2>
       <p>Temperature: {temperature}F</p>
       <p>Relative Humidity: {relativeHumidity}%</p>
       <p>Cloud Coverage: {cloudCoverage}</p>
